@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public EnemySpawner spawner;
     public Transform target;
     public Color color;
     public float moveSpeed = 2.0f;
@@ -142,7 +143,8 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider) {
         if ((collider.gameObject.transform.position - target.position).magnitude < 0.01f) {
-            Debug.Log("entered target");
+            // Debug.Log("entered target");
+            spawner.StartTargetDeath(1f);
             Destroy(gameObject);
         }
     }

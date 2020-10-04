@@ -44,18 +44,24 @@ public class GameManager : MonoBehaviour
         if (GameTime() - lastSpawnerSpawned >= currentStage.spawnerSpawnInterval) {
             lastSpawnerSpawned = GameTime();
             Vector2 targetPos = RandomTargetPosition();
+            Color color = Random.ColorHSV(0.2f, 0.8f, 0.8f, 1f, 1f, 1f);
             GameObject target = Instantiate(targetPrefab, targetPos, Quaternion.identity);
+            target.GetComponentInChildren<SpriteRenderer>().color = color;
+            iTween.RotateBy(target, iTween.Hash(
+                "amount", new Vector3(0f,0f,1f),
+                "time", 2f,
+                "looptype", iTween.LoopType.loop,
+                "easetype", iTween.EaseType.linear)
+            );
             GameObject spawner = Instantiate(enemySpawnerPrefab, CalculateSpawnerPosition(targetPos), Quaternion.identity);
             EnemySpawner spawnerComponent = spawner.GetComponent<EnemySpawner>();
             spawnerComponent.target = target;
             spawnerComponent.enemySpawnInterval = currentStage.enemySpawnInterval;
             spawnerComponent.enemiesToSpawnAtOnce = currentStage.enemiesToSpawnAtOnce;
-            spawnerComponent.totalEnemiesToSpawn = currentStage.totalEnemiesToSpawn;            
-        }
-    }
+            spawnerComponent.totalEnemiesToSpawn = currentStage.totalEnemiesToSpawn;
+            spawnerComponent.color = color;
 
-    float GameTime() {
-        return Time.time - gameStartTime;
+        }
     }
 
     Vector2 RandomTargetPosition() {
@@ -88,6 +94,10 @@ public class GameManager : MonoBehaviour
             Random.Range(-targetQuartal.x * spawnIncludeDiameter.x, -targetQuartal.x * (spawnIncludeDiameter.x + 3.0f)),
             Random.Range(-targetQuartal.y * spawnIncludeDiameter.y, -targetQuartal.y * (spawnIncludeDiameter.y + 3.0f))
         );
+    }
+
+    public float GameTime() {
+        return Time.time - gameStartTime;
     }
 
     public void EndGame() {
