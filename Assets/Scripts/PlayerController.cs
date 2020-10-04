@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.back * Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime);
         transform.Translate(Vector2.up * movementSpeed * Time.deltaTime);
         // rb2d.MovePosition((Vector2)transform.position + (Vector2)transform.up * movementSpeed * Time.deltaTime);
-        UpdateTail();       
+        UpdateTail();
     }
 
     void FixedUpdate() {
@@ -51,8 +51,26 @@ public class PlayerController : MonoBehaviour
         if (collider.gameObject.layer == LayerMask.NameToLayer("Bounds") || collider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
             // player hit a wall or enemy
             Debug.Log("Ending Game");
-            gameManager.EndGame();
+            movementSpeed = 0f;
+            gameManager.PlayAudio("whistle");
+            iTween.ColorTo(gameObject, iTween.Hash(
+                "color", new Color(1f,1f,1f,0f),
+                "time", 0.5f,
+                "easetype", iTween.EaseType.easeInQuint,
+                "includechildren", true
+            ));
+            iTween.ScaleTo(gameObject, iTween.Hash(
+                "scale", new Vector3(2f,2f,1f),
+                "time", 0.5f,
+                "easetype", iTween.EaseType.easeInQuint,
+                "oncomplete", "KillSelf"
+            ));
         }
+    }
+
+    void KillSelf() {
+        gameManager.EndGame();
+        Destroy(gameObject);
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -65,8 +83,8 @@ public class PlayerController : MonoBehaviour
             List<Vector3> pointAnchors = new List<Vector3>();
             pointAnchors.Add(lastRightPoint);
             pointAnchors.Add(lastLeftPoint);
-            pointAnchors.Add(leftPoint.position);
-            pointAnchors.Add(rightPoint.position);
+            pointAnchors.Add((Vector3)(Vector2)leftPoint.position);
+            pointAnchors.Add((Vector3)(Vector2)rightPoint.position);
             tailManager.addSegment(pointAnchors);
 
             lastRightPoint = rightPoint.position;

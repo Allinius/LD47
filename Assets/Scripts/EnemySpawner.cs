@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
             lastUpdate = Time.time;
             for (int i = 0; i < enemiesToSpawnAtOnce; i++) {
                 if (enemiesSpawned >= totalEnemiesToSpawn) {
-                    StartTargetDeath(8f);
+                    StartTargetDeath(10f);
                     continue;
                 }
                 GameObject enemy = Instantiate(enemyPrefab, transform.position + (Vector3)Random.insideUnitCircle, Quaternion.identity);
@@ -53,6 +53,7 @@ public class EnemySpawner : MonoBehaviour
             "color", Color.white,
             "time", seconds,
             "easetype", iTween.EaseType.easeOutQuint,
+            "includechildren", true,
             "oncomplete", "DestroySelfAndTarget",
             "oncompletetarget", gameObject
         ));

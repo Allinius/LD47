@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     public GameObject targetPrefab;
     public List<StageInfo> gameStages;
 
+    public GameObject audioSourcePrefab;
+    public AudioClip popAudio;
+    public AudioClip whistleAudio;
+
     public int score = 0;
 
     private Vector2 spawnExcludeDiameter = new Vector2(5f, 2f);
@@ -18,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private List<GameObject> activeTargets;
     private int currentStageIndex = 0;
-    private float lastSpawnerSpawned = -999f;
+    private float lastSpawnerSpawned = -Mathf.Infinity;
     private float gameStartTime = 0f;
 
     // Start is called before the first frame update
@@ -39,6 +43,7 @@ public class GameManager : MonoBehaviour
         if (GameTime() >= currentStage.stageEndTime && currentStageIndex < gameStages.Count - 1) {
             currentStage = gameStages[++currentStageIndex];
             Debug.Log("New stage: " + currentStageIndex);
+            lastSpawnerSpawned = -Mathf.Infinity;
         }
         // spawn a spawner if possible
         if (GameTime() - lastSpawnerSpawned >= currentStage.spawnerSpawnInterval) {
@@ -109,5 +114,32 @@ public class GameManager : MonoBehaviour
             score++;
             scoreText.text = score.ToString();
         }
+        PlayAudio("pop");
     }
+
+    public void PlayAudio(string clipName) {
+        AudioClip audioClip = null;
+        if (clipName == "pop") {
+            audioClip = popAudio;
+        } else if (clipName == "whistle") {
+            audioClip = whistleAudio;
+        }
+        GameObject audioSourceInstance = Instantiate(audioSourcePrefab, transform.position, Quaternion.identity);
+        AudioSource audioSourceComponent = audioSourceInstance.GetComponent<AudioSource>();
+        audioSourceComponent.clip = audioClip;
+        audioSourceComponent.Play();
+        iTween.ScaleTo(audioSourceInstance, iTween.Hash(
+            "scale", new Vector3(),
+            "time", 2f,
+            "oncomplete", "DestroyOnComplete",
+            "oncompletetarget", gameObject,
+            "oncompleteparams", audioSourceInstance
+        ));
+    }
+
+    void DestroyOnComplete(GameObject obj) {
+        Destroy(obj);
+    }
+
+
 }

@@ -71,10 +71,14 @@ public class TailManager : MonoBehaviour
         pc2d.points = colPoints.ToArray();
 
         // update z value of segment
-        // Vector3 pos = seg.transform.position;
-        // pos.z = -gameManager.GameTime() / 10000f;
-        // seg.transform.position = pos;
+        Vector3 pos = seg.transform.position;
+        pos.z = -gameManager.GameTime() / 10000f;
+        seg.transform.position = pos;
 
         tailSegments.Enqueue(seg);
+    }
+
+    public Queue<GameObject> GetTailSegments() {
+        return tailSegments;
     }
 }

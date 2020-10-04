@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI;
     public GameObject restartMenuUI;
+    public GameObject gameOverText;
 
     public static bool gameIsPaused = false;
     public static bool gameEnded = false;
@@ -32,6 +33,12 @@ public class PauseMenu : MonoBehaviour
     public void PauseRestart() {
         restartMenuUI.SetActive(true);
         pauseMenuUI.SetActive(false);
+        iTween.ScaleFrom(gameOverText, iTween.Hash(
+            "scale", new Vector3(3f,3f,1f),
+            "time", 1f,
+            "ignoretimescale", true,
+            "easetype", iTween.EaseType.easeOutElastic
+        ));
         Time.timeScale = 0f;
         gameIsPaused = true;
         gameEnded = true;
