@@ -2505,6 +2505,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 1053221087}
@@ -2555,6 +2559,30 @@ PrefabInstance:
     - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
       propertyPath: gameStages.Array.data[3].totalEnemiesToSpawn
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.data[3].stageEndTime
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.data[4].stageEndTime
+      value: 9999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.data[4].enemiesToSpawnAtOnce
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.data[4].totalEnemiesToSpawn
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.data[4].enemySpawnInterval
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911848757005763278, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
+      propertyPath: gameStages.Array.data[4].spawnerSpawnInterval
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1911848757005763279, guid: 4a06141a4f65f2a4386d2aef736e5080, type: 3}
       propertyPath: m_LocalPosition.x
