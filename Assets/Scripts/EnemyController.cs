@@ -5,8 +5,13 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public Transform target;
+    public Color color;
     public float moveSpeed = 2.0f;
     public float lookDistance = 2.0f;
+    public SpriteRenderer spriteRenderer;
+    public Sprite baseSprite;
+    public Sprite worriedSprite;
+    public Sprite angrySprite;
     public bool drawGizmos = false;
 
     private Rigidbody2D rb2d;
@@ -17,7 +22,8 @@ public class EnemyController : MonoBehaviour
 
    
     private Vector2 direction;
-    public bool spawnInvulnerability = true;
+    private bool spawnInvulnerability = true;
+    private bool angry = false;
 
     private Vector2 gizmoDirection;
     // private List<Vector2> failedLookGizmos = new List<Vector2>();
@@ -51,6 +57,8 @@ public class EnemyController : MonoBehaviour
 
         player = GameObject.FindWithTag("Player");
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+
+        spriteRenderer.color = color;
     }
 
     // Update is called once per frame
@@ -62,6 +70,9 @@ public class EnemyController : MonoBehaviour
         // change target to player if target doesn't exist;
         if (target == null && player != null) {
             target = player.transform;
+            angry = true;
+            spriteRenderer.sprite = angrySprite;
+            spriteRenderer.color = Color.white;
         }
 
         if (spawnInvulnerability) {
@@ -72,7 +83,9 @@ public class EnemyController : MonoBehaviour
         if (hit.collider != null) {
             EmergencyMove();
         } else {
-            spawnInvulnerability = false;
+            if (!angry) {
+                spriteRenderer.sprite = baseSprite;
+            }
             direction = (target.position - transform.position).normalized;
         }
 
@@ -93,6 +106,11 @@ public class EnemyController : MonoBehaviour
             }
         }
         if (viableDirections.Count > 0) {
+            if (!angry && viableDirections.Count <= 4) {
+                spriteRenderer.sprite = worriedSprite;
+            } else if (!angry) {
+                spriteRenderer.sprite = baseSprite;
+            }
             spawnInvulnerability = false;
             float minAngle = Mathf.Infinity;
             int minIndex = -1;
@@ -108,12 +126,17 @@ public class EnemyController : MonoBehaviour
             }
             direction = viableDirections[minIndex];
         } else if (!spawnInvulnerability) {
-            KillSelf();
+            iTween.ScaleTo(gameObject, iTween.Hash(
+                "scale", new Vector3(2f,2f,1f),
+                "time", 0.5f,
+                "easetype", iTween.EaseType.easeInExpo,
+                "oncomplete", "KillSelf"
+            ));
         }
     }
 
     void KillSelf() {
-        gameManager.EnemyKilled();
+        gameManager.EnemyKilled(angry);
         Destroy(gameObject);
     }
 

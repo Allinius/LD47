@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             GameObject target = Instantiate(targetPrefab, targetPos, Quaternion.identity);
             GameObject spawner = Instantiate(enemySpawnerPrefab, CalculateSpawnerPosition(targetPos), Quaternion.identity);
             EnemySpawner spawnerComponent = spawner.GetComponent<EnemySpawner>();
-            spawnerComponent.target = target.transform;
+            spawnerComponent.target = target;
             spawnerComponent.enemySpawnInterval = currentStage.enemySpawnInterval;
             spawnerComponent.enemiesToSpawnAtOnce = currentStage.enemiesToSpawnAtOnce;
             spawnerComponent.totalEnemiesToSpawn = currentStage.totalEnemiesToSpawn;            
@@ -94,8 +94,10 @@ public class GameManager : MonoBehaviour
         pauseMenu.PauseRestart();
     }
 
-    public void EnemyKilled() {
-        score++;
-        scoreText.text = score.ToString();
+    public void EnemyKilled(bool angry) {
+        if (!angry) {
+            score++;
+            scoreText.text = score.ToString();
+        }
     }
 }

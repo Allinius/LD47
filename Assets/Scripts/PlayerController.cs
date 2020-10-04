@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider) {
         // Destroy(gameObject);
-        Debug.Log("Ending Game");
-        gameManager.EndGame();
-        // if (collider.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
-        //     // player hit a wall
-            
-        // }
+        
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Bounds") || collider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+            // player hit a wall or enemy
+            Debug.Log("Ending Game");
+            gameManager.EndGame();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision) {

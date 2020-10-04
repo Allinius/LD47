@@ -39,7 +39,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6512244365143497912}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -97,6 +97,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3510776137963865957, guid: ee1b51b8e48d6bb42b29a02c5865a52f, type: 3}
   target: {fileID: 0}
-  interval: 2
-  enemySpawnCount: 1
+  enemySpawnInterval: 2
+  enemiesToSpawnAtOnce: 1
   totalEnemiesToSpawn: 20
